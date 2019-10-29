@@ -211,10 +211,8 @@ function generateAuthors(){
     const articleAuthor = article.getAttribute('data-author');
     //console.log(articleAuthors);
 
-    const authorAttribute = articleAuthor.split(' ').join('-').toLowerCase();
-
     //insert html of all the links into the tags wrapper
-    authorWrapper.innerHTML = 'By <a href="#author-' + authorAttribute + '">' + articleAuthor + '</a>';
+    authorWrapper.innerHTML = 'By <a href="#author-' + articleAuthor + '">' + articleAuthor + '</a>';
 
   //end LOOP for every authors
   }
