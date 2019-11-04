@@ -40,7 +40,8 @@ const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author';
+  optArticleAuthorSelector = '.post-author',
+  optTagsListSelector = '.tags.list';
 
 function generateTitleLinks(customSelector = ''){
 
@@ -86,6 +87,8 @@ function generateTitleLinks(customSelector = ''){
 generateTitleLinks();
 
 function generateTags(){
+  //[NEW] create a new variable allTags with an empty object
+  let allTags = {};
 
   //find all articles
   const articles = document.querySelectorAll(optArticleSelector);
@@ -116,6 +119,14 @@ function generateTags(){
       //add generated code to html variable
       html = html + linkHTML;
 
+      //[NEW] check if this link is not already in allTags
+      if(!allTags.hasOwnProperty(tag)){
+        //[NEW] add tag to allTags object
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
+      }
+
       //end LOOP for each tag
     }
 
@@ -124,6 +135,23 @@ function generateTags(){
 
   //end LOOP for every article
   }
+
+  //[NEW] find list of tags in right column
+  const tagList = document.querySelector('.tags');
+
+  //[NEW] create variable for all links html code
+  let allTagsHTML = '';
+  
+  //[NEW] start LOOP for each tag in allTags
+  for(let tag in allTags){
+  //[NEW] generate code of a link and add it to allTagsHTML
+    allTagsHTML += tag + ' (' + allTags[tag] + ') ';
+  //[NEW] end LOOP for each tag in allTags
+  }
+
+  //[NEW] add html from allTagsHTML to tagList
+  tagList.innerHTML = allTagsHTML;  
+
 }
 
 generateTags();
