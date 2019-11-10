@@ -41,7 +41,10 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list';
+  optTagsListSelector = '.list.tags',
+  optCloudClassCount = '5',
+  optCloudClassPrefix = 'tag-size-',
+  optAuthorsListSelector = '.list.authors-';
 
 function generateTitleLinks(customSelector = ''){
 
@@ -101,6 +104,33 @@ function calculateTagsParams(tags){
     }
   }
   return params;
+}
+
+function calculateTagClass(count, params){
+  //console.log('test');
+  console.log(count);
+  console.log(params);
+  //console.log(optCloudClassCount);
+
+  //looking for a count, which is a subtract beetween a value out tag(6) vs. params.min
+  const normalizedCount = count - params.min;
+
+  //do const as subtract beetween params.max & params.min
+  const normalizedMax = params.max - params.min;
+
+  //do percentage beetwen normalizedCount & normalizedMax
+  const percentage = normalizedCount / normalizedMax;
+
+  //do const classNumber as algorithm integer lottery draw
+  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
+
+  console.log('test');
+  console.log('normalizedCount =', normalizedCount);
+  console.log('normalizedMax =', normalizedMax);
+  console.log('percentage = ', percentage);
+  console.log('classNumber =', classNumber);
+
+  return "tag-size-" + classNumber;
 }
 
 function generateTags(){
@@ -164,8 +194,12 @@ function generateTags(){
   
   //[NEW] start LOOP for each tag in allTags
   for(let tag in allTags){
+    const tagLink = '<li><a href="#tag-' + tag + '">' + tag + '</a></li>';
   //[NEW] generate code of a link and add it to allTagsHTML
-    allTagsHTML += tag + ' (' + allTags[tag] + ') ';
+    const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">'+ tag + '(' + allTags[tag] + ')' +'</a></li>';
+    console.log('tagLinkHTML:', tagLinkHTML);
+    allTagsHTML += tagLinkHTML;
+
   //[NEW] end LOOP for each tag in allTags
   }
 
